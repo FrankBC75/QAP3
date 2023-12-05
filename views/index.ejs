@@ -1,0 +1,156 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column; /* Align buttons in a column */
+      }
+
+      .edit-btn {
+        margin-bottom: 5px; /* Add some spacing between Edit and Delete buttons */
+        text-decoration: none;
+        background-color: #3498db;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .delete-btn {
+        background-color: #ff5555;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      form {
+        margin-left: 10px;
+      }
+
+      h2 {
+        text-align: center;
+      }
+
+      /* Search form styling */
+      form[action="/"] {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      label[for="search"] {
+        margin-right: 10px;
+      }
+
+      input#search {
+        padding: 5px;
+      }
+
+      button[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+
+    <!-- Script for index.ejs -->
+    <script>
+      function confirmDelete(personId) {
+        const isConfirmed = confirm(
+          "Are you sure you want to delete this person?"
+        );
+
+        if (isConfirmed) {
+          document.getElementById(`deleteForm${personId}`).submit();
+        }
+      }
+
+      function matchesSearch(person, search) {
+        // Implement your search logic here
+        const searchTerm = search.toLowerCase();
+        const fullName =
+          `${person.first_name} ${person.last_name}`.toLowerCase();
+        return (
+          fullName.includes(searchTerm) ||
+          person.phone_number.includes(searchTerm)
+        );
+      }
+    </script>
+  </head>
+  <body>
+    <h1>User List</h1>
+    <!-- Search form by name -->
+
+    <ul>
+      <% people.forEach(person => { %>
+      <!-- Filter based on search query -->
+      <% if (!search || (search && matchesSearch(person, search))) { %>
+      <li>
+        <%= person.first_name %> <%= person.last_name %> - <%=
+        person.phone_number %>
+        <div class="actions">
+          <a class="edit-btn" href="/people/<%= person.person_id %>/edit"
+            >Edit</a
+          >
+          <button
+            class="delete-btn"
+            onclick="confirmDelete('<%= person.person_id %>')"
+          >
+            Delete
+          </button>
+          <form
+            id="deleteForm<%= person.person_id %>"
+            action="/people/<%= person.person_id %>?_method=DELETE"
+            method="post"
+            style="display: none"
+          >
+            <button type="submit">Confirm Delete</button>
+          </form>
+        </div>
+      </li>
+      <% } %> <% }) %>
+    </ul>
+    <!-- Add New User form -->
+    <h2>Add New User</h2>
+    <form action="/people" method="post">
+      <label for="first_name">First Name:</label>
+      <input type="text" name="first_name" required />
+      <label for="last_name">Last Name:</label>
+      <input type="text" name="last_name" required />
+      <label for="phone_number">Phone Number:</label>
+      <input type="text" name="phone_number" required />
+      <button type="submit">Add User</button>
+    </form>
+  </body>
+</html>
