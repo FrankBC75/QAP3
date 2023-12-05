@@ -1,0 +1,15 @@
+1.	Viewing All Individuals on Web Page:
+•	As a user, I can visit the web page and see a list of all individuals from the "people" table in the database.
+
+2.	Fetching All Individuals via REST API:
+•	As a user, I can make a GET request to the REST API endpoint /people to fetch all individuals from the "people" table, and the records will be returned as JSON data.
+
+3.	Adding a New Individual via Web Page:
+•	As a user, I can access a web page that allows me to add a new individual to the "people" table in the database.
+
+4.	Updating an Individual via Web Page:
+•	As a user, I can navigate to the web page, click "Edit" next to a person's name, and modify their details, ensuring the changes are reflected in the database.
+
+5.	Deleting an Individual via Web Page:
+•	As a user, I can visit the web page, click "Delete" next to a person's name, and confirm the deletion, ensuring the person is removed from the database.
+
